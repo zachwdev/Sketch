@@ -4,9 +4,11 @@ var canvas = document.getElementById("mainCanvas"),
     btnClear = document.getElementById("btnClear"),
     btnSave = document.getElementById("btnSave"),
     btnLoad = document.getElementById("btnLoad"),
-    colorInput = document.getElementById('colorInput');
+    colorInput = document.getElementById('colorInput'),
+    sizeInput = document.getElementById('sizeInput');
 
 var color = colorInput.value;
+var size = sizeInput.value;
 
 btnClear.addEventListener("click", function () {
     canvas.width = canvas.width;
@@ -22,7 +24,14 @@ btnLoad.addEventListener("click", function () {
 
 colorInput.addEventListener("input", function(){
     return color = colorInput.value;
+});
+
+sizeInput.addEventListener("input", function(){
+    return size = sizeInput.value;
 })
+
+document.body.addEventListener("DOMContentLoaded", loadCanvas(), false);
+
 /********* Drawing Functionality **********/
 
 var canvas = document.getElementById('mainCanvas'),
@@ -73,14 +82,14 @@ canvas.addEventListener("mouseout", function (e){
 /********** Brushes **********/
 
 function marker(x,y) {
-    ctx.lineWidth = 6;
+    ctx.lineWidth = size;
     ctx.lineJoin = ctx.lineCap = 'round';
     ctx.lineTo(x, y);
     ctx.strokeStyle = "#FFFFFF";
-    ctx.shadowBlur = 2;
+    ctx.shadowBlur = (size / 3);
     ctx.shadowColor = color;
     ctx.stroke();
-    // makes a cool start shape ctx.closePath();
+    //makes cool start shape ctx.closePath();
 }
 
 /********** Local Storage **********/
