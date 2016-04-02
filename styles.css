@@ -1,0 +1,19 @@
+h1 {
+    text-align: center;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+h2 {
+    text-align: center;
+    font-family: Arial, 'Helvetica Neue', Helvetica, sans-serif;
+}
+
+canvas {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    -webkit-box-shadow: 10px 10px 52px -18px rgba(74,74,74,1);
+    -moz-box-shadow: 10px 10px 52px -18px rgba(74,74,74,1);
+    box-shadow: 10px 10px 52px -18px rgba(74,74,74,1);
+}
