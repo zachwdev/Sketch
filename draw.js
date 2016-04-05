@@ -5,10 +5,19 @@ var canvas = document.getElementById("mainCanvas"),
     btnSave = document.getElementById("btnSave"),
     btnLoad = document.getElementById("btnLoad"),
     colorInput = document.getElementById('colorInput'),
-    sizeInput = document.getElementById('sizeInput');
+    sizeInput = document.getElementById('sizeInput'),
+    outlineInput = document.getElementById('outlineInput'),
+    middlePointInput = document.getElementById('middlePointInput'),
+    brushCanvas1 = document.getElementById('brushCanvas1'),
+    brushCanvas2 = document.getElementById('brushCanvas2'),
+    brushCanvas3 = document.getElementById('brushCanvas3'),
+    brushCanvas4 = document.getElementById('brushCanvas4');
 
 var color = colorInput.value;
 var size = sizeInput.value;
+var outline = outlineInput.checked;
+var middlePoint = middlePointInput.checked;
+
 
 btnClear.addEventListener("click", function () {
     canvas.width = canvas.width;
@@ -22,13 +31,35 @@ btnLoad.addEventListener("click", function () {
     loadCanvas();
 });
 
-colorInput.addEventListener("input", function(){
+colorInput.addEventListener("input", function () {
     return color = colorInput.value;
 });
 
-sizeInput.addEventListener("input", function(){
+sizeInput.addEventListener("input", function () {
     return size = sizeInput.value;
-})
+});
+
+outlineInput.addEventListener("click", function () {
+    return outline = outlineInput.checked;
+});
+
+middlePointInput.addEventListener("click", function () {
+    return middlePoint = middlePointInput.checked;
+});
+
+function loadBrushCanvas() {
+    brushCanvasCtx = brushCanvas1.getContext('2d');
+    brushCanvasCtx.beginPath();
+    brushCanvasCtx.lineWidth = 10;
+    brushCanvasCtx.shadowBlur = (10 / 3);
+    brushCanvasCtx.shadowColor = 'F000000';
+    brushCanvasCtx.lineJoin = brushCanvasCtx.lineCap = 'round';
+    brushCanvasCtx.moveTo(10, 35);
+    brushCanvasCtx.lineTo(290, 35);
+    brushCanvasCtx.stroke();
+    
+    brushCanvasCtx = brushCanvas2.getContext('2d');
+}
 
 document.body.addEventListener("DOMContentLoaded", loadCanvas(), false);
 
@@ -56,7 +87,7 @@ canvas.addEventListener("mousedown", function (e) {
     drawing = true;
     ctx.beginPath();
     ctx.moveTo(x, y);
-    
+
 });
 
 canvas.addEventListener("mousemove", function (e) {
@@ -65,7 +96,7 @@ canvas.addEventListener("mousemove", function (e) {
         y = pos.y;
 
     if (drawing) {
-        marker(x,y);
+        marker(x, y);
     }
 });
 
@@ -74,22 +105,29 @@ canvas.addEventListener("mouseup", function (e) {
     ctx.closePath();
 });
 
-canvas.addEventListener("mouseout", function (e){
+canvas.addEventListener("mouseout", function (e) {
     drawing = false;
     ctx.closePath();
 })
 
 /********** Brushes **********/
 
-function marker(x,y) {
+function marker(x, y) {
     ctx.lineWidth = size;
     ctx.lineJoin = ctx.lineCap = 'round';
     ctx.lineTo(x, y);
-    ctx.strokeStyle = "#FFFFFF";
+    if (outline) {
+        ctx.strokeStyle = '#FFFFFF';
+    } else {
+        ctx.strokeStyle = color;
+    }
+
     ctx.shadowBlur = (size / 3);
     ctx.shadowColor = color;
     ctx.stroke();
-    //makes cool start shape ctx.closePath();
+    if (middlePoint) {
+        ctx.closePath();
+    }
 }
 
 /********** Local Storage **********/
@@ -107,5 +145,5 @@ function loadCanvas() {
     img.onload = function () {
         ctx.drawImage(img, 0, 0);
     };
-    console.log("Canvas Loaded")
+    loadBrushCanvas();
 }

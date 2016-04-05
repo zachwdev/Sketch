@@ -1,21 +1,61 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        <link rel="stylesheet" type="text/css" href="styles.css" />
-    </head>
+<head>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+</head>
 
-    <body>
-        <h1>Draw It</h1>
-        <h2>Welcome to draw it!</h2>
-        <canvas id="mainCanvas" width="800" height="600"> Your browser does not support the canvas element</canvas>
-        <button id="btnClear">Clear</button>
-        <button id="btnSave">Save</button>
-        <button id="btnLoad">Load</button>
-        <label for="sizeInput">Brush size</label>
-        <input type="range" id="sizeInput" min="1" max="30" step="1" value="5" />
-        <input type="color" id="colorInput" value="#ff00ff" />
-        <script src="draw.js"></script>
-    </body>
-    
+<body>
+    <div id="main">
+        <div id=flexboxContainer>
+            <div id="toolbar">
+                <h2>Brushes</h2>
+                <div class="control canvasControls">
+                    <canvas class="brushCanvas" id="brushCanvas1" width="300px" height="70px"></canvas>
+                </div>
+                <div class="control canvasControls">
+                    <canvas class="brushCanvas" id="brushCanvas2" width="300px" height="70px"></canvas>
+                </div>
+                <div class="control canvasControls">
+                    <canvas class="brushCanvas" id="brushCanvas3" width="300px" height="70px"></canvas>
+                </div>
+                <div class="control canvasControls">
+                    <canvas class="brushCanvas" id="brushCanvas4" width="300px" height="70px"></canvas>
+                </div>
+                <h2>Brush Styles</h2>
+                <div class="control btnControls topLine">
+                    <div id="colorInputDiv"></div>
+                    <label for="colorInput">Color: </label>
+                    <input type="color" id="colorInput" value="#ff00ff" />
+                    <label for="sizeInput">Size: </label>
+                    <input type="range" id="sizeInput" min="1" max="30" step="1" value="5" />
+                </div>
+                <div class="control">
+                    <label for="outlineInput">Outline: </label>
+                    <input type="checkbox" id="outlineInput" />
+                    <label for="middlePointInput">Middle Point: </label>
+                    <input type="checkbox" id="middlePointInput" />
+                </div>
+
+                <div class="control topLine">
+                    <button id="btnUndo">Undo</button>
+                    <button id="btnRedo">Redo</button>
+                    <button id="btnClear">Clear</button>
+                </div>
+
+
+                <div class="control btnControls">
+                    <button id="btnSave">Save</button>
+                    <button id="btnLoad">Load</button>
+                    <button id="btnShare">Share</button>
+                </div>
+            </div>
+            <div id="canvas">
+                <canvas id="mainCanvas" width="800" height="600"> Your browser does not support the canvas element</canvas>
+            </div>
+        </div>
+    </div>
+    <script src="draw.js"></script>
+</body>
+
 </html>
