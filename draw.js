@@ -110,6 +110,39 @@ canvas.addEventListener("mouseout", function (e) {
     ctx.closePath();
 })
 
+/********** Mobile Implementaion *********/
+
+canvas.addEventListener("touchstart", function (e) {
+    var pos = getMousePos(this, e),
+        x = pos.x,
+        y = pos.y;
+
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+
+});
+
+canvas.addEventListener("touchmove", function (e) {
+    var pos = getMousePos(this, e),
+        x = pos.x,
+        y = pos.y;
+
+    if (drawing) {
+        marker(x, y);
+    }
+});
+
+canvas.addEventListener("touchend", function (e) {
+    drawing = false;
+    ctx.closePath();
+});
+
+canvas.addEventListener("touchleave", function (e) {
+    drawing = false;
+    ctx.closePath();
+})
+
 /********** Brushes **********/
 
 function marker(x, y) {
