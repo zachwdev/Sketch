@@ -131,11 +131,12 @@ function getMousePos(canvas, e) {
 
 
 canvas.addEventListener("mousedown", function (e) {
-    pushCanvasState();
     var pos = getMousePos(this, e),
         x = pos.x,
         y = pos.y;
-
+    if(canvasStateArray.length === 0){
+        pushCanvasState();
+    }
     drawing = true;
     ctx.beginPath();
     ctx.moveTo(x, y);
@@ -155,6 +156,7 @@ canvas.addEventListener("mousemove", function (e) {
 canvas.addEventListener("mouseup", function (e) {
     drawing = false;
     ctx.closePath();
+    pushCanvasState();
 });
 
 canvas.addEventListener("mouseout", function (e) {
@@ -167,6 +169,38 @@ canvas.addEventListener("mouseout", function (e) {
 
 /********** Mobile Implementaion *********/
 
+canvas.addEventListener("touchstart", function (e) {
+    var pos = getMousePos(this, e),
+        x = pos.x,
+        y = pos.y;
+
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(x, y);
+
+});
+
+canvas.addEventListener("touchmove", function (e) {
+    var pos = getMousePos(this, e),
+        x = pos.x,
+        y = pos.y;
+
+    if (drawing) {
+        marker(x, y);
+    }
+});
+
+canvas.addEventListener("touchend", function (e) {
+    drawing = false;
+    ctx.closePath();
+});
+
+canvas.addEventListener("touchleave", function (e) {
+    drawing = false;
+    ctx.closePath();
+})
+
+/********** Mobile Implimentation **********/
 canvas.addEventListener("touchstart", function (e) {
     var pos = getMousePos(this, e),
         x = pos.x,
