@@ -1,9 +1,9 @@
 /********** Controls **********/
 
-var canvas = document.getElementById("mainCanvas"),
-    btnClear = document.getElementById("btnClear"),
-    btnSave = document.getElementById("btnSave"),
-    btnLoad = document.getElementById("btnLoad"),
+var canvas = document.getElementById('mainCanvas'),
+    btnClear = document.getElementById('btnClear'),
+    btnSave = document.getElementById('btnSave'),
+    btnLoad = document.getElementById('btnLoad'),
     colorInput = document.getElementById('colorInput'),
     sizeInput = document.getElementById('sizeInput'),
     outlineInput = document.getElementById('outlineInput'),
@@ -11,7 +11,9 @@ var canvas = document.getElementById("mainCanvas"),
     brushCanvas1 = document.getElementById('brushCanvas1'),
     brushCanvas2 = document.getElementById('brushCanvas2'),
     brushCanvas3 = document.getElementById('brushCanvas3'),
-    brushCanvas4 = document.getElementById('brushCanvas4');
+    brushCanvas4 = document.getElementById('brushCanvas4'),
+    btnUndo = document.getElementById('btnUndo'),
+    btnRedo = document.getElementById('btnRedo');
 
 var color = colorInput.value;
 var size = sizeInput.value;
@@ -29,6 +31,14 @@ btnSave.addEventListener("click", function () {
 
 btnLoad.addEventListener("click", function () {
     loadCanvas();
+});
+
+btnUndo.addEventListener("click", function () {
+    undoCanvasState();
+});
+
+btnRedo.addEventListener("click", function () {
+    redoCanvasState();
 });
 
 colorInput.addEventListener("input", function () {
@@ -57,17 +67,58 @@ function loadBrushCanvas() {
     brushCanvasCtx.moveTo(10, 35);
     brushCanvasCtx.lineTo(290, 35);
     brushCanvasCtx.stroke();
-    
+
     brushCanvasCtx = brushCanvas2.getContext('2d');
 }
+
+
 
 document.body.addEventListener("DOMContentLoaded", loadCanvas(), false);
 
 /********* Drawing Functionality **********/
 
+
+
 var canvas = document.getElementById('mainCanvas'),
     ctx = canvas.getContext('2d'),
     drawing;
+
+/** undo redo **/
+var canvasStateArray = [],
+    canvasStateCount = -1;
+
+function pushCanvasState() {
+    canvasStateCount++;
+    if (canvasStateCount < canvasStateArray.length) {
+        canvasStateArray.length = canvasStateCount
+    }
+    canvasStateArray.push(canvas.toDataURL());
+}
+
+function undoCanvasState() {
+    if (canvasStateCount > 0) {
+        canvasStateCount--;
+        var canvasSnap = new Image();
+        canvasSnap.src = canvasStateArray[canvasStateCount];
+        canvasSnap.onload = function () {
+            canvas.width = canvas.width;
+            ctx.drawImage(canvasSnap, 0, 0);
+            console.log(canvasSnap);
+        }
+    }
+}
+
+function redoCanvasState() {
+    if (canvasStateCount < canvasStateArray.length - 1) {
+        canvasStateCount++;
+        var canvasSnap = new Image();
+        canvasSnap.src = canvasStateArray[canvasStateCount];
+        canvasSnap.onload = function () {
+            ctx.drawImage(canvasSnap, 0, 0);
+        }
+
+    }
+}
 
 function getMousePos(canvas, e) {
 
@@ -80,6 +131,7 @@ function getMousePos(canvas, e) {
 
 
 canvas.addEventListener("mousedown", function (e) {
+    pushCanvasState();
     var pos = getMousePos(this, e),
         x = pos.x,
         y = pos.y;
@@ -106,9 +158,12 @@ canvas.addEventListener("mouseup", function (e) {
 });
 
 canvas.addEventListener("mouseout", function (e) {
-    drawing = false;
-    ctx.closePath();
-})
+    if (drawing) {
+        drawing = false;
+        ctx.closePath();
+        pushCanvasState();
+    }
+});
 
 /********** Mobile Implementaion *********/
 
@@ -176,6 +231,7 @@ function loadCanvas() {
     var img = new Image;
     img.src = dataURL;
     img.onload = function () {
+        canvas.width = canvas.width;
         ctx.drawImage(img, 0, 0);
     };
     loadBrushCanvas();
