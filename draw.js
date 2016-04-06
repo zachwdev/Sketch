@@ -81,6 +81,7 @@ document.body.addEventListener("DOMContentLoaded", loadCanvas(), false);
 
 var canvas = document.getElementById('mainCanvas'),
     ctx = canvas.getContext('2d'),
+    pointsArray = [],
     drawing;
 
 /** undo redo **/
@@ -134,7 +135,11 @@ canvas.addEventListener("mousedown", function (e) {
     var pos = getMousePos(this, e),
         x = pos.x,
         y = pos.y;
-    if(canvasStateArray.length === 0){
+    pointsArray.push({
+        x: x,
+        y: y
+    });
+    if (canvasStateArray.length === 0) {
         pushCanvasState();
     }
     drawing = true;
@@ -149,14 +154,26 @@ canvas.addEventListener("mousemove", function (e) {
         y = pos.y;
 
     if (drawing) {
-        marker(x, y);
-    }
+
+        pointsArray.push({
+            x: x,
+            y: y
+        });
+
+        ctx.beginPath();
+        ctx.moveTo(pointsArray[0].x, pointsArray[0].y);
+        for (var i = 1; i < pointsArray.length; i++) {
+            ctx.lineTo(pointsArray[i].x, pointsArray[i].y);
+        }
+        ctx.stroke();
+    };
 });
 
 canvas.addEventListener("mouseup", function (e) {
     drawing = false;
     ctx.closePath();
     pushCanvasState();
+    pointsArray.length = 0;
 });
 
 canvas.addEventListener("mouseout", function (e) {
@@ -164,6 +181,7 @@ canvas.addEventListener("mouseout", function (e) {
         drawing = false;
         ctx.closePath();
         pushCanvasState();
+        pointsArray.length = 0;
     }
 });
 
