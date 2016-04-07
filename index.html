@@ -23,12 +23,13 @@
                     <canvas class="brushCanvas" id="brushCanvas4" width="300px" height="70px"></canvas>
                 </div>
                 <h2>Brush Styles</h2>
-                <div class="control btnControls topLine">
-                    <div id="colorInputDiv"></div>
+                <div class="control btnControls topLine brushStyles">
                     <label for="colorInput">Color: </label>
                     <input type="color" id="colorInput" value="#ff00ff" />
                     <label for="sizeInput">Size: </label>
                     <input type="range" id="sizeInput" min="1" max="30" step="1" value="5" />
+                    <label for="blurSizeInput">Blur: </label>
+                    <input type="range" id="blurSizeInput" min="1" max="5" step=".25" value="2.5" />
                 </div>
                 <div class="control">
                     <label for="outlineInput">Outline: </label>
@@ -51,7 +52,7 @@
                 </div>
             </div>
             <div id="canvas">
-                <canvas id="mainCanvas" width="800" height="600"> Your browser does not support the canvas element</canvas>
+                <canvas id="mainCanvas" width="900" height="700"> Your browser does not support the canvas element</canvas>
             </div>
         </div>
     </div>

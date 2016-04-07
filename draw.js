@@ -13,10 +13,12 @@ var canvas = document.getElementById('mainCanvas'),
     brushCanvas3 = document.getElementById('brushCanvas3'),
     brushCanvas4 = document.getElementById('brushCanvas4'),
     btnUndo = document.getElementById('btnUndo'),
-    btnRedo = document.getElementById('btnRedo');
+    btnRedo = document.getElementById('btnRedo'),
+    blurSizeInput = document.getElementById('blurSizeInput');
 
 var color = colorInput.value;
 var size = sizeInput.value;
+var blurSize = blurSizeInput.value;
 var outline = outlineInput.checked;
 var middlePoint = middlePointInput.checked;
 
@@ -48,6 +50,11 @@ colorInput.addEventListener("input", function () {
 sizeInput.addEventListener("input", function () {
     return size = sizeInput.value;
 });
+
+blurSizeInput.addEventListener("input", function () {
+    console.log(blurSize);
+    return blurSize = blurSizeInput.value;
+})
 
 outlineInput.addEventListener("click", function () {
     return outline = outlineInput.checked;
@@ -130,7 +137,6 @@ function getMousePos(canvas, e) {
     };
 }
 
-
 canvas.addEventListener("mousedown", function (e) {
     var pos = getMousePos(this, e),
         x = pos.x,
@@ -165,7 +171,20 @@ canvas.addEventListener("mousemove", function (e) {
         for (var i = 1; i < pointsArray.length; i++) {
             ctx.lineTo(pointsArray[i].x, pointsArray[i].y);
         }
+        ctx.lineWidth = size;
+        ctx.lineJoin = ctx.lineCap = 'round';
+        if (outline) {
+            ctx.strokeStyle = '#FFFFFF';
+        } else {
+            ctx.strokeStyle = color;
+        }
+
+        ctx.shadowBlur = (size / blurSize);
+        ctx.shadowColor = color;
         ctx.stroke();
+        if (middlePoint) {
+            ctx.closePath();
+        }
     };
 });
 
@@ -184,39 +203,6 @@ canvas.addEventListener("mouseout", function (e) {
         pointsArray.length = 0;
     }
 });
-
-/********** Mobile Implementaion *********/
-
-canvas.addEventListener("touchstart", function (e) {
-    var pos = getMousePos(this, e),
-        x = pos.x,
-        y = pos.y;
-
-    drawing = true;
-    ctx.beginPath();
-    ctx.moveTo(x, y);
-
-});
-
-canvas.addEventListener("touchmove", function (e) {
-    var pos = getMousePos(this, e),
-        x = pos.x,
-        y = pos.y;
-
-    if (drawing) {
-        marker(x, y);
-    }
-});
-
-canvas.addEventListener("touchend", function (e) {
-    drawing = false;
-    ctx.closePath();
-});
-
-canvas.addEventListener("touchleave", function (e) {
-    drawing = false;
-    ctx.closePath();
-})
 
 /********** Mobile Implimentation **********/
 canvas.addEventListener("touchstart", function (e) {
@@ -252,7 +238,7 @@ canvas.addEventListener("touchleave", function (e) {
 
 /********** Brushes **********/
 
-function marker(x, y) {
+function marker() {
     ctx.lineWidth = size;
     ctx.lineJoin = ctx.lineCap = 'round';
     ctx.lineTo(x, y);
