@@ -77,15 +77,15 @@ brushCanvas1.addEventListener("click", function () {
 });
 
 brushCanvas2.addEventListener("click", function () {
-    brush = "brush2"
+    //brush = "brush2"
 });
 
 brushCanvas3.addEventListener("click", function () {
-    brush = "brush3"
+    //brush = "brush3"
 });
 
 brushCanvas4.addEventListener("click", function () {
-    brush = "brush4"
+    //brush = "brush4"
 });
 
 function loadBrushCanvas() {
